@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - pg
+      - redis
+    environment:
+      - DB_HOST=pg
+    networks:
+      - goboards-network
+    container_name: backend-local
+    ports:
+      - "8000:8000"
+  pg:
+    image: postgres:16.1-alpine
+    environment:
+      - POSTGRES_USER=goboards
+      - POSTGRES_PASSWORD=goboards
+      - POSTGRES_DB=goboards
+    healthcheck:
+      test: pg_isready -U goboards -d goboards
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    container_name: pg-local
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./infrastructure/postgres-data:/var/lib/postgresql/data:cached
+    networks:
+      - goboards-network
+  redis:
+    image: redis/redis-stack
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    container_name: redis-local
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    healthcheck:
+      test: redis-cli ping
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ./infrastructure/redis/data:/data
+    networks:
+      - goboards-network
+
+networks:
+  goboards-network:
