@@ -14,5 +14,5 @@ RUN poetry config virtualenvs.create false  \
 COPY . .
 EXPOSE 8000
 
-RUN chmod 777 backend.sh
-ENTRYPOINT ["/app/entrypoint.sh"]
+RUN chmod 777 ./entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
