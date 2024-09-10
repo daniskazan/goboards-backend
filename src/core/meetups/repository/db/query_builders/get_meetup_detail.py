@@ -28,6 +28,7 @@ class GetMeetupDetailQueryBuilder:
     @classmethod
     def __join_users(cls):
         cls.__result_query = cls.__result_query.join(MeetupORM.users)
+        return cls
 
     @classmethod
     def __build(cls) -> Select:
@@ -35,5 +36,11 @@ class GetMeetupDetailQueryBuilder:
 
     @classmethod
     def build(cls, *, meetup_id: uuid.UUID) -> Select:
-        q = cls.__select_meetups().__filter_by_id(meetup_id=meetup_id).__join_games().__join_users().__build()
+        q = (
+            cls.__select_meetups()
+            .__filter_by_id(meetup_id=meetup_id)
+            .__join_games()
+            .__join_users()
+            .__build()
+        )
         return q

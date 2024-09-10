@@ -2,11 +2,12 @@ import uuid
 from fastapi import APIRouter, Depends, Request, status, Cookie
 from fastapi.responses import Response
 
-from api.v1.auth.dependencies.deps import get_obtain_token_use_case
+from api.v1.auth.dependencies.deps import get_obtain_token_use_case, get_logout_use_case
 from api.v1.oauth2.dependencies.auth import get_user_or_401
 from api.v1.oauth2.serializers.response.main import AccessTokenData
 from core.auth.models import SessionORM
 from core.auth.services import ObtainNewTokenPairUseCase
+from core.auth.services import LogoutUseCase
 from core.oauth.services import UserAPIKeyCredentials
 from exceptions.db.auth import SessionNotFoundException
 from utils.generics.dto import Result
@@ -44,6 +45,10 @@ async def obtain_token(
 @auth.post("/logout")
 async def logout(
     request: Request,
-    response: Response
+    response: Response,
+    refresh_token: uuid.UUID = Cookie(...),
+    service: LogoutUseCase = Depends(get_logout_use_case),
 ):
-    return OkResponse.new(payload=request.client.host)
+    await service.run(refresh_token=refresh_token)
+    response.delete_cookie("refresh_token")
+    return OkResponse.new(status_code=status.HTTP_204_NO_CONTENT, payload=None)

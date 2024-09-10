@@ -28,5 +28,5 @@ class MeetupReadRepository:
         result = await self._session.execute(q)
         meetup = result.scalar_one_or_none()
         if not meetup:
-            return Result.failure(error=MeetupNotFoundException)
+            return Result.failure(error=MeetupNotFoundException())
         return Result.success(payload=meetup)

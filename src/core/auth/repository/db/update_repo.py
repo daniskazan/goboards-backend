@@ -2,6 +2,7 @@ import uuid
 
 from configs.auth import auth
 from core.auth.models import SessionORM
+from core.auth.repository.db.query_builders.delete_refresh_token import DeleteRefreshSessionQueryBuilder
 import datetime as dt
 from sqlalchemy.ext.asyncio import AsyncSession
 from utils.generics.dto import Result
@@ -29,3 +30,7 @@ class SessionUpdateRepository:
         await self._session.delete(session)
         await self._session.commit()
 
+    async def delete_session_by_value(self, *, refresh_token: uuid.UUID) -> None:
+        q = DeleteRefreshSessionQueryBuilder.build(refresh_token=refresh_token)
+        await self._session.execute(q)
+        await self._session.commit()

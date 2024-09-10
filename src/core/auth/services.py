@@ -34,9 +34,6 @@ class ObtainNewTokenPairUseCase:
         )
         return session
 
-    async def _delete_session(self, session: SessionORM):
-        await self._session_update_repo.delete_session(session=session)
-
     async def run(
         self,
         *,
@@ -44,11 +41,14 @@ class ObtainNewTokenPairUseCase:
         refresh_token: uuid.UUID,
         ip: str,
     ) -> tuple[Result[SessionORM, None], Result[AccessTokenData, None]] | Result[None, SessionNotFoundException]:
-        result = await self._get_session(user_id=user.sub, refresh_token=refresh_token)
+        result = await self._session_read_repo.get_session_by_id(
+            user_id=user.sub,
+            refresh_token=refresh_token
+        )
         if not result.payload:
             return result
 
-        await self._delete_session(session=result.payload)
+        await self._session_update_repo.delete_session(session=result.payload)
         access_token = self._jwt_service.create_access_token(user=user)
         refresh_token = await self._jwt_service.create_refresh_token(
             data=GenerateRefreshTokenInputData(
@@ -65,3 +65,15 @@ class ObtainNewTokenPairUseCase:
                 )
             )
         )
+
+
+class LogoutUseCase:
+    def __init__(
+        self,
+        *,
+        session_update_repo: SessionUpdateRepository
+    ):
+        self._session_update_repo = session_update_repo
+
+    async def run(self, refresh_token: uuid.UUID):
+        return await self._session_update_repo.delete_session_by_value(refresh_token=refresh_token)

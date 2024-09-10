@@ -7,6 +7,7 @@ from core.auth.repository.db.read_repo import SessionReadRepository
 from core.auth.repository.db.update_repo import SessionUpdateRepository
 from core.oauth.services import JWTService
 from core.auth.services import ObtainNewTokenPairUseCase
+from core.auth.services import LogoutUseCase
 
 
 def get_obtain_token_use_case(
@@ -19,3 +20,9 @@ def get_obtain_token_use_case(
         session_read_repo=session_read_repo,
         session_update_repo=session_update_repo
     )
+
+
+def get_logout_use_case(
+    session_update_repo: SessionUpdateRepository = Depends(get_session_update_repo)
+) -> LogoutUseCase:
+    return LogoutUseCase(session_update_repo=session_update_repo)

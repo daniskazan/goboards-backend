@@ -10,6 +10,8 @@ services:
       - redis
     environment:
       - DB_HOST=pg
+    volumes:
+      - ./src:/app/src
     networks:
       - goboards-network
     container_name: backend-local
