@@ -13,16 +13,10 @@ from core.auth.services import LogoutUseCase
 def get_obtain_token_use_case(
     jwt_service: JWTService = Depends(get_jwt_service),
     session_read_repo: SessionReadRepository = Depends(get_session_read_repo),
-    session_update_repo: SessionUpdateRepository = Depends(get_session_update_repo)
+    session_update_repo: SessionUpdateRepository = Depends(get_session_update_repo),
 ) -> ObtainNewTokenPairUseCase:
-    return ObtainNewTokenPairUseCase(
-        jwt_service=jwt_service,
-        session_read_repo=session_read_repo,
-        session_update_repo=session_update_repo
-    )
+    return ObtainNewTokenPairUseCase(jwt_service=jwt_service, session_read_repo=session_read_repo, session_update_repo=session_update_repo)
 
 
-def get_logout_use_case(
-    session_update_repo: SessionUpdateRepository = Depends(get_session_update_repo)
-) -> LogoutUseCase:
+def get_logout_use_case(session_update_repo: SessionUpdateRepository = Depends(get_session_update_repo)) -> LogoutUseCase:
     return LogoutUseCase(session_update_repo=session_update_repo)

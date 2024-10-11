@@ -9,13 +9,7 @@ from utils.generics.dto import Result
 
 
 class MeetupService:
-    def __init__(
-        self,
-        *,
-        meetup_read_repo: MeetupReadRepository,
-        meetup_update_repo: MeetupUpdateRepository
-
-    ):
+    def __init__(self, *, meetup_read_repo: MeetupReadRepository, meetup_update_repo: MeetupUpdateRepository):
         self.meetup_read_repo = meetup_read_repo
         self.meetup_update_repo = meetup_update_repo
 

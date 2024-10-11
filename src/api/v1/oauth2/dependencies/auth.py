@@ -1,5 +1,5 @@
 import jwt
-from configs.server import server
+from configs.server import ServerConfig
 from core.oauth.services import UserAPIKeyCredentials
 from exceptions.app.auth import AuthenticationRequiredHTTPException
 from fastapi import Depends
@@ -14,7 +14,7 @@ async def get_user_or_401(
     if not api_token:
         raise AuthenticationRequiredHTTPException
     try:
-        payload = jwt.decode(api_token, server.JWT_SECRET_KEY, algorithms=[server.JWT_ALGORITHM])
+        payload = jwt.decode(api_token, ServerConfig.JWT_SECRET_KEY, algorithms=[ServerConfig.JWT_ALGORITHM])
     except (jwt.ExpiredSignatureError, jwt.InvalidSignatureError) as exc:
         raise AuthenticationRequiredHTTPException from exc
 

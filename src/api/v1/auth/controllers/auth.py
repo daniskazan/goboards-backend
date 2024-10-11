@@ -25,20 +25,12 @@ async def obtain_token(
     refresh_token: uuid.UUID = Cookie(...),
     service: ObtainNewTokenPairUseCase = Depends(get_obtain_token_use_case),
 ):
-    result = await service.run(
-        user=user,
-        refresh_token=refresh_token,
-        ip=request.client.host
-    )
+    result = await service.run(user=user, refresh_token=refresh_token, ip=request.client.host)
     match result:
         case Result(_, SessionNotFoundException() as err):
             return BadResponse.new(status_code=status.HTTP_404_NOT_FOUND, error=err.detail)
         case _:
-            response.set_cookie(
-                key="refresh_token",
-                value=str(result[1].payload.refresh_token),
-                expires=result[0].payload.expires_at.timestamp()
-            )
+            response.set_cookie(key="refresh_token", value=str(result[1].payload.refresh_token), expires=result[0].payload.expires_at.timestamp())
             return OkResponse.new(payload=result[1].payload)
 
 

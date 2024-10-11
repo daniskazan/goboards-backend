@@ -1,20 +1,22 @@
 import urllib.parse
 
-from configs.oauth import oauth
+from configs.oauth.vk import VKOauthConfig
 
 
 class VKRedirectLinkProvider:
-    client_id = oauth.VK_CLIENT_ID
-    redirect_uri = oauth.VK_REDIRECT_URI
-    response_type = oauth.VK_RESPONSE_TYPE
+    def __init__(self):
+        self._client_id = VKOauthConfig.VK_CLIENT_ID
+        self._redirect_uri = VKOauthConfig.VK_REDIRECT_URI
+        self._authorize_url = VKOauthConfig.VK_AUTHORIZE_URL
+        self._response_type = VKOauthConfig.VK_RESPONSE_TYPE
 
     @property
     def redirect_link(self) -> str:
         params = {
-            "client_id": self.client_id,
+            "client_id": self._client_id,
             "display": "page",
-            "redirect_uri": self.redirect_uri,
-            "response_type": self.response_type,
+            "redirect_uri": self._redirect_uri,
+            "response_type": self._response_type,
         }
-        link = oauth.VK_AUTHORIZE_URL + urllib.parse.urlencode(params)
+        link = self._authorize_url + urllib.parse.urlencode(params)
         return link

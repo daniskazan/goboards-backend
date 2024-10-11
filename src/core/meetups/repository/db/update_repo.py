@@ -19,7 +19,7 @@ class MeetupUpdateRepository:
             max_person_amount=params.max_person_amount,
             meetup_date=params.meetup_date,
             preferred_start_time=params.preferred_start_time,
-            preferred_end_time=params.preferred_end_time
+            preferred_end_time=params.preferred_end_time,
         )
         self._session.add(meetup)
         await self._session.commit()

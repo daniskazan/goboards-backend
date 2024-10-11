@@ -10,28 +10,13 @@ from utils.generics.dto import Result
 
 
 class ObtainNewTokenPairUseCase:
-
-    def __init__(
-        self,
-        *,
-        jwt_service: JWTService,
-        session_read_repo: SessionReadRepository,
-        session_update_repo: SessionUpdateRepository
-    ):
+    def __init__(self, *, jwt_service: JWTService, session_read_repo: SessionReadRepository, session_update_repo: SessionUpdateRepository):
         self._jwt_service = jwt_service
         self._session_read_repo = session_read_repo
         self._session_update_repo = session_update_repo
 
-    async def _get_session(
-        self,
-        *,
-        user_id: uuid.UUID,
-        refresh_token: uuid.UUID
-    ):
-        session = await self._session_read_repo.get_session_by_id(
-            user_id=user_id,
-            refresh_token=refresh_token
-        )
+    async def _get_session(self, *, user_id: uuid.UUID, refresh_token: uuid.UUID):
+        session = await self._session_read_repo.get_session_by_id(user_id=user_id, refresh_token=refresh_token)
         return session
 
     async def run(
@@ -41,38 +26,21 @@ class ObtainNewTokenPairUseCase:
         refresh_token: uuid.UUID,
         ip: str,
     ) -> tuple[Result[SessionORM, None], Result[AccessTokenData, None]] | Result[None, SessionNotFoundException]:
-        result = await self._session_read_repo.get_session_by_id(
-            user_id=user.sub,
-            refresh_token=refresh_token
-        )
+        result = await self._session_read_repo.get_session_by_id(user_id=user.sub, refresh_token=refresh_token)
         if not result.payload:
             return result
 
         await self._session_update_repo.delete_session(session=result.payload)
         access_token = self._jwt_service.create_access_token(user=user)
-        refresh_token = await self._jwt_service.create_refresh_token(
-            data=GenerateRefreshTokenInputData(
-                user_id=user.sub,
-                ip=ip
-            )
-        )
+        refresh_token = await self._jwt_service.create_refresh_token(data=GenerateRefreshTokenInputData(user_id=user.sub, ip=ip))
         return (
             Result.success(payload=refresh_token),
-            Result.success(
-                payload=AccessTokenData(
-                    access_token=access_token,
-                    refresh_token=refresh_token.refresh_token
-                )
-            )
+            Result.success(payload=AccessTokenData(access_token=access_token, refresh_token=refresh_token.refresh_token)),
         )
 
 
 class LogoutUseCase:
-    def __init__(
-        self,
-        *,
-        session_update_repo: SessionUpdateRepository
-    ):
+    def __init__(self, *, session_update_repo: SessionUpdateRepository):
         self._session_update_repo = session_update_repo
 
     async def run(self, refresh_token: uuid.UUID):

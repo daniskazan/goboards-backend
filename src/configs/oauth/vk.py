@@ -1,10 +1,8 @@
 import os
 from typing import Final
 
-import pydantic_settings
 
-
-class Settings(pydantic_settings.BaseSettings):
+class VKOauthConfig:
     VK_CLIENT_ID: int = os.environ.get("VK_CLIENT_ID", 7879893)
     VK_SECRET_KEY: str = os.environ.get("VK_SECRET_KEY", "KqosMtfIWJMsgAN8SNVd")
     VK_SERVICE_KEY: str = os.environ.get(
@@ -18,6 +16,3 @@ class Settings(pydantic_settings.BaseSettings):
     VK_RESPONSE_TYPE: Final = os.environ.get("VK_RESPONSE_TYPE", "code")
     VK_API_VERSION: str = os.environ.get("VK_API_VERSION", "5.199")
     VK_PROFILE_URL: str = os.environ.get("VK_PROFILE_URL", "https://api.vk.com/method/users.get")
-
-
-oauth = Settings()

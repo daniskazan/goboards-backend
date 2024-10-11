@@ -25,10 +25,5 @@ class DeleteRefreshSessionQueryBuilder:
 
     @classmethod
     def build(cls, *, refresh_token: uuid.UUID) -> Delete:
-        q = (
-            cls
-            .__select_sessions()
-            .__filter_by_value(refresh_token=refresh_token)
-            .__build()
-        )
+        q = cls.__select_sessions().__filter_by_value(refresh_token=refresh_token).__build()
         return q

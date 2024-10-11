@@ -6,8 +6,8 @@ from typing import TypeAlias
 
 import jwt
 
+from configs.server import ServerConfig
 from configs.auth import auth
-from configs.server import server
 from core.auth.models import SessionORM
 from core.auth.repository.db.update_repo import SessionUpdateRepository
 from core.oauth.exceptions import AccountNotFoundException
@@ -38,12 +38,10 @@ class GenerateRefreshTokenInputData(PydanticBaseModel):
 
 class JWTService(abc.ABC):
     @abc.abstractmethod
-    def create_access_token(self, *, user: UserORM | UserAPIKeyCredentials) -> str:
-        ...
+    def create_access_token(self, *, user: UserORM | UserAPIKeyCredentials) -> str: ...
 
     @abc.abstractmethod
-    async def create_refresh_token(self, data: GenerateRefreshTokenInputData) -> SessionORM:
-        ...
+    async def create_refresh_token(self, data: GenerateRefreshTokenInputData) -> SessionORM: ...
 
 
 class JWTServiceImplementation(JWTService):
@@ -59,8 +57,8 @@ class JWTServiceImplementation(JWTService):
         )
         return jwt.encode(
             payload=payload.model_dump(mode="json"),
-            key=server.JWT_SECRET_KEY,
-            algorithm=server.JWT_ALGORITHM
+            key=ServerConfig.JWT_SECRET_KEY,
+            algorithm=ServerConfig.JWT_ALGORITHM
         )
 
     async def create_refresh_token(self, *, data: GenerateRefreshTokenInputData) -> SessionORM:

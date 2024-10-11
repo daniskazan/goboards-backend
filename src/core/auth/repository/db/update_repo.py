@@ -17,11 +17,7 @@ class SessionUpdateRepository:
         self._session = session
 
     async def create_session(self, *, user_id: uuid.UUID, ip: str) -> SessionORM:
-        session = SessionORM(
-            id=uuid.uuid4(),
-            user_id=user_id, ip=ip,
-            expires_at=dt.datetime.now() + dt.timedelta(seconds=auth.REFRESH_TOKEN_TTL)
-        )
+        session = SessionORM(id=uuid.uuid4(), user_id=user_id, ip=ip, expires_at=dt.datetime.now() + dt.timedelta(seconds=auth.REFRESH_TOKEN_TTL))
         self._session.add(session)
         await self._session.commit()
         return session

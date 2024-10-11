@@ -3,7 +3,7 @@ import urllib.parse
 
 import httpx
 from api.v1.oauth2.serializers.response.main import AccessTokenVKResponse
-from configs.oauth import oauth
+from configs.oauth.vk import VKOauthConfig
 from exceptions.app.auth import VKBadCodeException
 from utils.generics.dto import Result
 
@@ -19,10 +19,10 @@ class VKAccessTokenProvider:
         code: str,
     ) -> None:
         self._code = code
-        self._access_token_base_url = oauth.VK_ACCESS_TOKEN_URL
-        self._client_id = oauth.VK_CLIENT_ID
-        self._client_secret = oauth.VK_SECRET_KEY
-        self._redirect_uri = oauth.VK_REDIRECT_URI
+        self._access_token_base_url = VKOauthConfig.VK_ACCESS_TOKEN_URL
+        self._client_id = VKOauthConfig.VK_CLIENT_ID
+        self._client_secret = VKOauthConfig.VK_SECRET_KEY
+        self._redirect_uri = VKOauthConfig.VK_REDIRECT_URI
 
     @property
     def access_token_url(self) -> str:

@@ -29,10 +29,7 @@ async def get_meetup_list(
 
 @meetups.get("/{meetup_id}", summary="Получить подробную информацию по встрече")
 async def get_meetup_detail(
-    request: Request,
-    meetup_id: uuid.UUID,
-    meetup_service: MeetupService = Depends(get_meetup_service),
-    user: UserAPIKeyCredentials = Depends(get_user_or_401)
+    request: Request, meetup_id: uuid.UUID, meetup_service: MeetupService = Depends(get_meetup_service), user: UserAPIKeyCredentials = Depends(get_user_or_401)
 ):
     result = await meetup_service.get_meetup_detail(meetup_id=meetup_id)
     match result:

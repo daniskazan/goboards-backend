@@ -58,21 +58,11 @@ async def get_access_token(
 
     account: Result[SocialAccountORM, None] = await oauth_service.login(provider="vk", profile=profile)
     access_token: str = jwt_service.create_access_token(user=account.payload.user)
-    session: SessionORM = await jwt_service.create_refresh_token(
-        data=GenerateRefreshTokenInputData(
-            user_id=account.payload.user_id,
-            ip=request.client.host
-        )
-    )
+    session: SessionORM = await jwt_service.create_refresh_token(data=GenerateRefreshTokenInputData(user_id=account.payload.user_id, ip=request.client.host))
     response.set_cookie(
         key="refresh_token",
         value=session.refresh_token,
         expires=session.expires_at.timestamp(),
         httponly=True,
     )
-    return OkResponse.new(
-        payload=AccessTokenData(
-            access_token=access_token,
-            refresh_token=session.refresh_token
-        )
-    )
+    return OkResponse.new(payload=AccessTokenData(access_token=access_token, refresh_token=session.refresh_token))

@@ -2,7 +2,7 @@ from typing import TypeAlias
 
 import httpx
 from api.v1.oauth2.serializers.response.main import AccessTokenVKResponse
-from configs.oauth import oauth
+from configs.oauth.vk import VKOauthConfig
 from exceptions.app.auth import VKBadCodeException, VKBadRequestException
 from oauth.providers.vk.access_token_provider import VKAccessTokenProvider
 from utils.generics.dto import Result
@@ -24,8 +24,8 @@ UserProfileInfo: TypeAlias = dict
 
 class VKAccountProvider:
     VK_PROFILE_URL_FORMAT = "https://vk.com/id{vk_id}"
-    PROFILE_URL = oauth.VK_PROFILE_URL
-    VK_API_VERSION = oauth.VK_API_VERSION
+    PROFILE_URL = VKOauthConfig.VK_PROFILE_URL
+    VK_API_VERSION = VKOauthConfig.VK_API_VERSION
 
     def __init__(self, *, access_token_provider: VKAccessTokenProvider) -> None:
         self._access_token_provider = access_token_provider
