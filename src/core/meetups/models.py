@@ -1,10 +1,7 @@
+import datetime as dt
 import uuid
 
-from sqlalchemy import orm
-from sqlalchemy import ForeignKey
-from sqlalchemy import UniqueConstraint
-
-import datetime as dt
+from sqlalchemy import ForeignKey, UniqueConstraint, orm
 
 from core.areas.models import AreaORM
 from core.games.models import GameORM

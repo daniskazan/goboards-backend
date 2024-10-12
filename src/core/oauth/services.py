@@ -1,13 +1,13 @@
 import abc
 import datetime as dt
 import uuid
+
 from dataclasses import dataclass
-from typing import TypeAlias
 
 import jwt
 
-from configs.server import ServerConfig
 from configs.auth import auth
+from configs.server import ServerConfig
 from core.auth.models import SessionORM
 from core.auth.repository.db.update_repo import SessionUpdateRepository
 from core.oauth.exceptions import AccountNotFoundException
@@ -19,10 +19,11 @@ from core.users.repository.db.update_repo import UserUpdateRepository
 from utils.generics.dto import Result
 from utils.generics.response import PydanticBaseModel
 
-UserProfileInfo: TypeAlias = dict
-ProviderName: TypeAlias = str
-SocialAccount: TypeAlias = Result[SocialAccountORM, None]
-User: TypeAlias = Result[UserORM, None]
+
+type UserProfileInfo = dict
+type ProviderName = str
+type SocialAccount = Result[SocialAccountORM, None]
+type User = Result[UserORM, None]
 
 
 class UserAPIKeyCredentials(PydanticBaseModel):
@@ -53,7 +54,7 @@ class JWTServiceImplementation(JWTService):
         payload = UserAPIKeyCredentials(
             sub=sub,
             username=user.username,
-            exp=int((dt.datetime.now(tz=dt.timezone.utc) + dt.timedelta(minutes=auth.ACCESS_TOKEN_TTL)).timestamp()),
+            exp=int((dt.datetime.now() + dt.timedelta(minutes=auth.ACCESS_TOKEN_TTL)).timestamp()),  # noqa: DTZ005
         )
         return jwt.encode(
             payload=payload.model_dump(mode="json"),
@@ -62,8 +63,7 @@ class JWTServiceImplementation(JWTService):
         )
 
     async def create_refresh_token(self, *, data: GenerateRefreshTokenInputData) -> SessionORM:
-        res = await self._session_update_repo.create_session(user_id=data.user_id, ip=data.ip)
-        return res
+        return await self._session_update_repo.create_session(user_id=data.user_id, ip=data.ip)
 
 
 @dataclass(kw_only=True)
@@ -72,9 +72,9 @@ class OAuthService:
     update_repo: SocialAccountUpdateRepository
     user_update_repo: UserUpdateRepository
 
-    async def _get_social_account(self, *, provider: str, user_id: int) -> Result[SocialAccountORM, None] | Result[None, AccountNotFoundException]:  # noqa
-        account = await self.read_repo.get_social_account(provider_name=provider, user_id=user_id)
-        return account
+    async def _get_social_account(self, *, provider: str, user_id: int) -> Result[SocialAccountORM, None] | Result[
+        None, AccountNotFoundException]:
+        return await self.read_repo.get_social_account(provider_name=provider, user_id=user_id)
 
     async def _create_social_account(
         self,
@@ -86,7 +86,8 @@ class OAuthService:
         account = await self.update_repo.create_social_account(provider=provider, user=user, extra_data=extra_data)
         return Result.success(payload=account)
 
-    async def _perform_login(self, *, provider: ProviderName, profile: Result[dict, None]) -> Result[SocialAccountORM, None]:  # noqa
+    async def _perform_login(self, *, provider: ProviderName, profile: Result[dict, None]) -> Result[
+        SocialAccountORM, None]:
         social_account = await self._get_social_account(provider=provider, user_id=profile.payload.get("user_id"))
         if not social_account.payload:
             user = await self.user_update_repo.create_user_from_oauth_provider(profile_info=profile)
@@ -94,5 +95,4 @@ class OAuthService:
         return social_account
 
     async def login(self, *, provider: ProviderName, profile: Result[dict, None]) -> Result[SocialAccountORM, None]:
-        account = await self._perform_login(provider=provider, profile=profile)
-        return account
+        return await self._perform_login(provider=provider, profile=profile)

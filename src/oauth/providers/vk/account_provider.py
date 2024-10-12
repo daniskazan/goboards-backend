@@ -1,11 +1,11 @@
-from typing import TypeAlias
-
 import httpx
+
 from api.v1.oauth2.serializers.response.main import AccessTokenVKResponse
 from configs.oauth.vk import VKOauthConfig
 from exceptions.app.auth import VKBadCodeException, VKBadRequestException
 from oauth.providers.vk.access_token_provider import VKAccessTokenProvider
 from utils.generics.dto import Result
+
 
 USER_FIELDS = [
     "first_name",
@@ -19,7 +19,7 @@ USER_FIELDS = [
     "photo_max_orig",
 ]
 
-UserProfileInfo: TypeAlias = dict
+type UserProfileInfo = dict
 
 
 class VKAccountProvider:
@@ -31,10 +31,10 @@ class VKAccountProvider:
         self._access_token_provider = access_token_provider
 
     async def get_access_token(self) -> Result[AccessTokenVKResponse, None] | Result[None, VKBadCodeException]:
-        token = await self._access_token_provider.get_access_token()
-        return token
+        return await self._access_token_provider.get_access_token()
 
-    async def get_profile_info(self, result: Result[AccessTokenVKResponse, None]) -> Result[dict, None] | Result[None, VKBadCodeException]:
+    async def get_profile_info(self, result: Result[AccessTokenVKResponse, None]) -> Result[dict, None] | Result[
+        None, VKBadCodeException]:
         async with httpx.AsyncClient() as c:
             response = await c.get(
                 url=self.PROFILE_URL,
@@ -46,7 +46,9 @@ class VKAccountProvider:
             )
         if response.status_code:
             json: UserProfileInfo = response.json()["response"][0]
-            profile_info: UserProfileInfo = self.update_profile_information(json, key="profile_url", value=self.VK_PROFILE_URL_FORMAT.format(vk_id=json["id"]))
+            profile_info: UserProfileInfo = self.update_profile_information(json, key="profile_url",
+                                                                            value=self.VK_PROFILE_URL_FORMAT.format(
+                                                                                vk_id=json["id"]))
             return Result.success(payload=profile_info)
         return Result.failure(error=VKBadRequestException())
 

@@ -1,12 +1,12 @@
 import enum
 
-from fastapi import FastAPI
-from fastapi import status
-from fastapi import Request
-from fastapi.exceptions import RequestValidationError
-from starlette.responses import JSONResponse
-from sqlalchemy.exc import IntegrityError
 from cmd.observers.interface import ApplicationObserver
+
+from fastapi import FastAPI, Request, status
+from fastapi.exceptions import RequestValidationError
+from sqlalchemy.exc import IntegrityError
+from starlette.responses import JSONResponse
+
 from exceptions.app.auth import AuthenticationRequiredHTTPException
 
 
@@ -25,22 +25,22 @@ class ExceptionHandler(ApplicationObserver):
     """
 
     @staticmethod
-    def handler_401(request: Request, exc: AuthenticationRequiredHTTPException) -> JSONResponse:  # noqa
+    def handler_401(request: Request, exc: AuthenticationRequiredHTTPException) -> JSONResponse:
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
             content={"code": ExceptionCodeEnum.HTTP_401_NOT_AUTHORIZED_ERROR},
         )
 
     @staticmethod
-    def handler_500(request: Request, exc: Exception) -> JSONResponse:  # noqa
+    def handler_500(request: Request, exc: Exception) -> JSONResponse:
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"code": ExceptionCodeEnum.HTTP_500_INTERNAL_SERVER_ERROR})
 
     @staticmethod
-    def handler_400(request: Request, exc: RequestValidationError) -> JSONResponse:  # noqa
+    def handler_400(request: Request, exc: RequestValidationError) -> JSONResponse:
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"code": ExceptionCodeEnum.HTTP_400_BAD_REQUEST_ERROR})
 
     @staticmethod
-    def handler_integrity_error(request: Request, exc: IntegrityError) -> JSONResponse:  # noqa
+    def handler_integrity_error(request: Request, exc: IntegrityError) -> JSONResponse:
         return JSONResponse(status_code=status.HTTP_409_CONFLICT, content={"code": ExceptionCodeEnum.HTTP_409_CONFLICT_ERROR})
 
     def notify(self, *, sender: FastAPI):

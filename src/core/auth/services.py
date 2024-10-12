@@ -4,7 +4,11 @@ from api.v1.oauth2.serializers.response.main import AccessTokenData
 from core.auth.models import SessionORM
 from core.auth.repository.db.read_repo import SessionReadRepository
 from core.auth.repository.db.update_repo import SessionUpdateRepository
-from core.oauth.services import JWTService, UserAPIKeyCredentials, GenerateRefreshTokenInputData
+from core.oauth.services import (
+    GenerateRefreshTokenInputData,
+    JWTService,
+    UserAPIKeyCredentials,
+)
 from exceptions.db.auth import SessionNotFoundException
 from utils.generics.dto import Result
 
@@ -16,8 +20,7 @@ class ObtainNewTokenPairUseCase:
         self._session_update_repo = session_update_repo
 
     async def _get_session(self, *, user_id: uuid.UUID, refresh_token: uuid.UUID):
-        session = await self._session_read_repo.get_session_by_id(user_id=user_id, refresh_token=refresh_token)
-        return session
+        return await self._session_read_repo.get_session_by_id(user_id=user_id, refresh_token=refresh_token)
 
     async def run(
         self,

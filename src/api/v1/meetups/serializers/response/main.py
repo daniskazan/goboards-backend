@@ -1,11 +1,12 @@
 import datetime as dt
 import uuid
+
 from typing import Self
 
 from pydantic import Field
 
-from core.meetups.enums import MeetupStatus
 from api.v1.games.serializers.response.main import NestedGameMeetupListResponse
+from core.meetups.enums import MeetupStatus
 from core.meetups.models import MeetupORM
 from utils.generics.dto import Result
 from utils.generics.response import PydanticBaseModel

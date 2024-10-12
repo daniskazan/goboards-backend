@@ -1,8 +1,10 @@
-from utils.db.base import BaseORMModel
-from core.users.models import UserORM
 import datetime as dt
 import uuid
-from sqlalchemy import ForeignKey, UniqueConstraint, orm, types
+
+from sqlalchemy import ForeignKey, orm
+
+from core.users.models import UserORM
+from utils.db.base import BaseORMModel
 
 
 class SessionORM(BaseORMModel):

@@ -1,6 +1,7 @@
 import uuid
 
 from pydantic import Field
+
 from utils.generics.response import PydanticBaseModel
 
 

@@ -1,11 +1,12 @@
 from uuid import UUID
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from core.games.models import GameORM
 from core.games.repository.db.query_builders.get_games_list import (
     GetGameListQueryBuilder,
 )
 from exceptions.db.games import GameNotFoundException
-from sqlalchemy.ext.asyncio import AsyncSession
 from utils.generics.dto import Result
 
 

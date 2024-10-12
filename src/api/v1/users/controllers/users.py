@@ -1,6 +1,6 @@
 import uuid
 
-from fastapi import APIRouter, Depends, Query, Request, status
+from fastapi import APIRouter, Depends, Request, status
 
 from api.v1.oauth2.dependencies.auth import get_user_or_401
 from api.v1.users.dependencies.deps import get_user_service

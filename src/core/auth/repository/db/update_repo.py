@@ -1,11 +1,13 @@
+import datetime as dt
 import uuid
+
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from configs.auth import auth
 from core.auth.models import SessionORM
-from core.auth.repository.db.query_builders.delete_refresh_token import DeleteRefreshSessionQueryBuilder
-import datetime as dt
-from sqlalchemy.ext.asyncio import AsyncSession
-from utils.generics.dto import Result
+from core.auth.repository.db.query_builders.delete_refresh_token import (
+    DeleteRefreshSessionQueryBuilder,
+)
 
 
 class SessionUpdateRepository:
@@ -17,7 +19,12 @@ class SessionUpdateRepository:
         self._session = session
 
     async def create_session(self, *, user_id: uuid.UUID, ip: str) -> SessionORM:
-        session = SessionORM(id=uuid.uuid4(), user_id=user_id, ip=ip, expires_at=dt.datetime.now() + dt.timedelta(seconds=auth.REFRESH_TOKEN_TTL))
+        session = SessionORM(
+            id=uuid.uuid4(),
+            user_id=user_id,
+            ip=ip,
+            expires_at=dt.datetime.now() + dt.timedelta(seconds=auth.REFRESH_TOKEN_TTL)  # noqa: DTZ005
+        )
         self._session.add(session)
         await self._session.commit()
         return session

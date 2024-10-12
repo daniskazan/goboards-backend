@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Generic, Self, TypeVar
 
+
 Payload = TypeVar("Payload")
 Error = TypeVar("Error")
 

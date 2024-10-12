@@ -21,10 +21,14 @@ bcrypt = "^4.2.0"
 
 [tool.ruff]
 src = ["src", "tests"]
+exclude = [
+    "alembic"
+]
 line-length = 79
+target-version = "py312"
 
 [tool.ruff.lint]
-select = ["ALL"]
+select = ["ALL", "I"]
 ignore = [
     "ANN",     # Mypy is better at this
     "ARG",     # unused arguments are common w/ interfaces
@@ -53,6 +57,9 @@ ignore = [
     "TRY004",  # too many false negatives
     "TRY300",  # else blocks are nice, but code-locality is nicer
     "PTH",     # pathlib can be slow, so no point to rewrite
+    "RUF002",
+    "B008",
+    "DTZ011"
 ]
 
 [tool.ruff.lint.per-file-ignores]

@@ -1,9 +1,9 @@
+from cmd.observers import ApplicationObserver, ExceptionHandler, RoutingHandler
+
 import uvicorn
+
 from fastapi import FastAPI
 
-from cmd.observers import ApplicationObserver
-from cmd.observers import ExceptionHandler
-from cmd.observers import RoutingHandler
 from configs.server import ServerConfig
 from utils.generics.response import APIResponse
 
@@ -15,10 +15,10 @@ class Server:
         docs_url="/docs"
     )
     config: ServerConfig = ServerConfig()
-    observers: list[ApplicationObserver] = [
+    observers: tuple[ApplicationObserver] = (
         ExceptionHandler(),
         RoutingHandler(),
-    ]
+    )
     def __call__(self) -> FastAPI:
         """
         Need for uvicorn.

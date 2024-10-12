@@ -1,11 +1,16 @@
 import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.v1.meetups.serializers.request.main import GetMeetupListRequest
 from core.meetups.models import MeetupORM
+from core.meetups.repository.db.query_builders.get_meetup_detail import (
+    GetMeetupDetailQueryBuilder,
+)
+from core.meetups.repository.db.query_builders.get_meetups_list import (
+    GetMeetupListQueryBuilder,
+)
 from exceptions.db.meetups import MeetupNotFoundException
-from core.meetups.repository.db.query_builders.get_meetups_list import GetMeetupListQueryBuilder
-from core.meetups.repository.db.query_builders.get_meetup_detail import GetMeetupDetailQueryBuilder
 from utils.generics.dto import Result
 
 

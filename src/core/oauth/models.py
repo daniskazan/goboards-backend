@@ -1,5 +1,6 @@
-from core.users.models import UserORM
 from sqlalchemy import ForeignKey, UniqueConstraint, orm, types
+
+from core.users.models import UserORM
 from utils.db.base import BaseORMModel
 
 

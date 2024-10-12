@@ -1,5 +1,6 @@
 from fastapi import Query
 from pydantic import Field, PositiveInt, StrictInt
+
 from utils.generics.response import PydanticBaseModel
 
 

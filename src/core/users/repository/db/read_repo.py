@@ -3,7 +3,9 @@ import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.users.models import UserORM
-from core.users.repository.db.query_builders.get_user_detail import GetUserDetailQueryBuilder
+from core.users.repository.db.query_builders.get_user_detail import (
+    GetUserDetailQueryBuilder,
+)
 from exceptions.db.users import UserNotFoundException
 from utils.generics.dto import Result
 

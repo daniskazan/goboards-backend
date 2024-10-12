@@ -1,4 +1,5 @@
 import uuid
+
 from typing import Self
 
 from sqlalchemy.sql import Delete, delete
@@ -25,5 +26,4 @@ class DeleteRefreshSessionQueryBuilder:
 
     @classmethod
     def build(cls, *, refresh_token: uuid.UUID) -> Delete:
-        q = cls.__select_sessions().__filter_by_value(refresh_token=refresh_token).__build()
-        return q
+        return cls.__select_sessions().__filter_by_value(refresh_token=refresh_token).__build()

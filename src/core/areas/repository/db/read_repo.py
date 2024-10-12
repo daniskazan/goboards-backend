@@ -1,9 +1,6 @@
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import text, select, exists
-from sqlalchemy.orm import selectinload
 
-
-from core.areas.models import AreaORM
 from utils.generics.dto import Result
 
 

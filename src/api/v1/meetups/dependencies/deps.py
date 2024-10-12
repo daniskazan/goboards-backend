@@ -1,8 +1,9 @@
+from fastapi import Depends
+
 from core.meetups.repository.db.read_repo import MeetupReadRepository
 from core.meetups.repository.db.update_repo import MeetupUpdateRepository
 from core.meetups.services import MeetupService
 from utils.db.session import get_db
-from fastapi import Depends
 
 
 def get_meetup_read_repo(session=Depends(get_db)):

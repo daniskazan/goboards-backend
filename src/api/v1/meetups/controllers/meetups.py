@@ -1,17 +1,23 @@
 import uuid
 
-from api.v1.meetups.serializers.request.main import GetMeetupListRequest, CreateMeetupRequest
-from api.v1.meetups.serializers.response.main import GetMeetupListResponse
-from api.v1.meetups.serializers.response.main import CreateMeetupResponse
-from api.v1.oauth2.dependencies.auth import get_user_or_401
-from api.v1.meetups.dependencies.deps import get_meetup_service
-from core.oauth.services import UserAPIKeyCredentials
-from core.meetups.services import MeetupService
-from exceptions.db.meetups import MeetupNotFoundException
-
 from fastapi import APIRouter, Depends, Request, status
+
+from api.v1.meetups.dependencies.deps import get_meetup_service
+from api.v1.meetups.serializers.request.main import (
+    CreateMeetupRequest,
+    GetMeetupListRequest,
+)
+from api.v1.meetups.serializers.response.main import (
+    CreateMeetupResponse,
+    GetMeetupListResponse,
+)
+from api.v1.oauth2.dependencies.auth import get_user_or_401
+from core.meetups.services import MeetupService
+from core.oauth.services import UserAPIKeyCredentials
+from exceptions.db.meetups import MeetupNotFoundException
 from utils.generics.dto import Result
 from utils.generics.response import BadResponse, OkResponse
+
 
 meetups = APIRouter(prefix="/meetups", tags=["Meetups"])
 

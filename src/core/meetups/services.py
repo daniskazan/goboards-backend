@@ -1,10 +1,13 @@
 import uuid
 
-from api.v1.meetups.serializers.request.main import GetMeetupListRequest, CreateMeetupRequest
+from api.v1.meetups.serializers.request.main import (
+    CreateMeetupRequest,
+    GetMeetupListRequest,
+)
 from core.meetups.models import MeetupORM
-from exceptions.db.meetups import MeetupNotFoundException
 from core.meetups.repository.db.read_repo import MeetupReadRepository
 from core.meetups.repository.db.update_repo import MeetupUpdateRepository
+from exceptions.db.meetups import MeetupNotFoundException
 from utils.generics.dto import Result
 
 

@@ -1,10 +1,13 @@
-from typing import Self
 import datetime as dt
-from core.meetups.models import MeetupORM, MeetupGameORM
-from core.meetups.enums import MeetupStatus
-from sqlalchemy import select, func
+
+from typing import Self
+
+from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.sql.selectable import Select
+
+from core.meetups.enums import MeetupStatus
+from core.meetups.models import MeetupORM
 
 
 class GetMeetupListQueryBuilder:
@@ -58,14 +61,12 @@ class GetMeetupListQueryBuilder:
         limit: int,
         offset: int,
     ) -> Select:
-        q = (
+        return (
             cls.__select_meetups()
             .__join_games()
             .__join_users()
-            # .__group_by_meetup_id()
             .__filter_by_status()
             .__filter_by_date(meetup_date=meetup_date)
             .__apply_limit_offset(limit=limit, offset=offset)
             .__build()
         )
-        return q

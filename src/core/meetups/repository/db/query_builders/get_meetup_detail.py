@@ -1,10 +1,11 @@
 import uuid
+
 from typing import Self
-import datetime as dt
-from core.meetups.models import MeetupORM, MeetupGameORM
-from core.meetups.enums import MeetupStatus
+
 from sqlalchemy import select
 from sqlalchemy.sql.selectable import Select
+
+from core.meetups.models import MeetupORM
 
 
 class GetMeetupDetailQueryBuilder:
@@ -36,5 +37,4 @@ class GetMeetupDetailQueryBuilder:
 
     @classmethod
     def build(cls, *, meetup_id: uuid.UUID) -> Select:
-        q = cls.__select_meetups().__filter_by_id(meetup_id=meetup_id).__join_games().__join_users().__build()
-        return q
+        return cls.__select_meetups().__filter_by_id(meetup_id=meetup_id).__join_games().__join_users().__build()

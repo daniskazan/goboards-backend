@@ -1,6 +1,7 @@
-from core.oauth.models import SocialAccountORM
 from sqlalchemy import select
 from sqlalchemy.sql.selectable import Select
+
+from core.oauth.models import SocialAccountORM
 
 
 class GetSocialAccountQueryBuilder:
@@ -19,7 +20,7 @@ class GetSocialAccountQueryBuilder:
     @classmethod
     def __filter_user_id(cls, *, user_id: int):
         cls.__result_query = cls.__result_query.where(
-            SocialAccountORM.extra_data["user_id"] == user_id  # noqa
+            SocialAccountORM.extra_data["user_id"] == user_id
         )
         return cls
 
@@ -29,5 +30,4 @@ class GetSocialAccountQueryBuilder:
 
     @classmethod
     def build(cls, *, provider: str, user_id: int) -> Select:
-        q = cls.__select_banners().__filter_by_provider(provider=provider).__filter_user_id(user_id=user_id).__build()
-        return q
+        return cls.__select_banners().__filter_by_provider(provider=provider).__filter_user_id(user_id=user_id).__build()

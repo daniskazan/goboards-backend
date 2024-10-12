@@ -4,7 +4,6 @@ import uuid
 from fastapi import Query
 from pydantic import Field, PositiveInt, StrictInt
 
-from core.meetups.enums import MeetupStatus
 from utils.generics.response import PydanticBaseModel
 
 

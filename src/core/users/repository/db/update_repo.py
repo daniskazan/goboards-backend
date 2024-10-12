@@ -1,5 +1,6 @@
-from core.users.models import UserORM
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from core.users.models import UserORM
 from utils.generics.dto import Result
 
 

@@ -2,6 +2,7 @@ import enum
 import urllib.parse
 
 import httpx
+
 from api.v1.oauth2.serializers.response.main import AccessTokenVKResponse
 from configs.oauth.vk import VKOauthConfig
 from exceptions.app.auth import VKBadCodeException

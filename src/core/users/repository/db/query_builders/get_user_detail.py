@@ -1,9 +1,12 @@
 import uuid
+
 from typing import Self
-from core.users.models import UserORM
+
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.sql.selectable import Select
+
+from core.users.models import UserORM
 
 
 class GetUserDetailQueryBuilder:
@@ -30,5 +33,4 @@ class GetUserDetailQueryBuilder:
 
     @classmethod
     def build(cls, *, user_id: uuid.UUID) -> Select:
-        q = cls.__select_users().__filter_by_user_id(user_id=user_id).__join_social_links().__build()
-        return q
+        return cls.__select_users().__filter_by_user_id(user_id=user_id).__join_social_links().__build()

@@ -1,5 +1,14 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import orm
+
 from utils.db.base import BaseORMModel
+
+
+if TYPE_CHECKING:
+    from core.auth.models import SessionORM
+    from core.games.models import GameORM
+    from core.oauth.models import SocialAccountORM
 
 
 class UserORM(BaseORMModel):
@@ -9,10 +18,10 @@ class UserORM(BaseORMModel):
     last_name: orm.Mapped[str]
     is_admin: orm.Mapped[bool] = orm.mapped_column(default=False)
 
-    social_accounts: orm.Mapped[list["SocialAccountORM"]] = orm.relationship(  # noqa
+    social_accounts: orm.Mapped[list["SocialAccountORM"]] = orm.relationship(
         back_populates="user"
     )
-    games: orm.Mapped[list["GameORM"]] = orm.relationship(  # noqa
+    games: orm.Mapped[list["GameORM"]] = orm.relationship(
         back_populates="user"
     )
     sessions: orm.Mapped[list["SessionORM"]] = orm.relationship(back_populates="user")

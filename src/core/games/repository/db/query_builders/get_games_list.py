@@ -1,8 +1,9 @@
 from typing import Self
 
-from core.games.models import GameORM
 from sqlalchemy import select
 from sqlalchemy.sql.selectable import Select
+
+from core.games.models import GameORM
 
 
 class GetGameListQueryBuilder:
@@ -30,5 +31,4 @@ class GetGameListQueryBuilder:
 
     @classmethod
     def build(cls, *, game_name: str | None, limit: int, offset: int) -> Select:
-        q = cls.__select_banners().__filter_by_name(game_name=game_name).__apply_limit_offset(limit=limit, offset=offset).__build()
-        return q
+        return cls.__select_banners().__filter_by_name(game_name=game_name).__apply_limit_offset(limit=limit, offset=offset).__build()

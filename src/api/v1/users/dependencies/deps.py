@@ -1,7 +1,8 @@
-from core.users.services import UserService
-from core.users.repository.db.read_repo import UserReadRepository
-from utils.db.session import get_db
 from fastapi import Depends
+
+from core.users.repository.db.read_repo import UserReadRepository
+from core.users.services import UserService
+from utils.db.session import get_db
 
 
 def get_user_read_repo(session=Depends(get_db)) -> UserReadRepository:

@@ -1,13 +1,14 @@
 from fastapi import Depends
 
-from api.v1.oauth2.dependencies.oauth import get_session_update_repo
-from api.v1.oauth2.dependencies.oauth import get_session_read_repo
-from api.v1.oauth2.dependencies.oauth import get_jwt_service
+from api.v1.oauth2.dependencies.oauth import (
+    get_jwt_service,
+    get_session_read_repo,
+    get_session_update_repo,
+)
 from core.auth.repository.db.read_repo import SessionReadRepository
 from core.auth.repository.db.update_repo import SessionUpdateRepository
+from core.auth.services import LogoutUseCase, ObtainNewTokenPairUseCase
 from core.oauth.services import JWTService
-from core.auth.services import ObtainNewTokenPairUseCase
-from core.auth.services import LogoutUseCase
 
 
 def get_obtain_token_use_case(

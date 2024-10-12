@@ -1,9 +1,11 @@
 import datetime as dt
+
 from uuid import UUID
+
+from pydantic import Field, field_validator
 
 from core.games.enums import GameType
 from core.games.models import GameORM
-from pydantic import Field, field_validator
 from utils.generics.dto import Result
 from utils.generics.response import PydanticBaseModel
 
@@ -19,7 +21,7 @@ class CreateGameResponse(PydanticBaseModel):
     type: GameType = Field(..., alias="game_type", description="Тип игры")
 
     @field_validator("type")
-    def type_to_description(cls, v: GameType):
+    def type_to_description(cls, v: GameType):  # noqa: N805
         return v.get_description()
 
 
@@ -30,7 +32,7 @@ class GetGameDetailResponse(PydanticBaseModel):
     created_at: dt.datetime = Field(..., description="Дата создания")
 
     @field_validator("type")
-    def type_to_description(cls, v: GameType):
+    def type_to_description(cls, v: GameType):  # noqa: N805
         return v.get_description()
 
     @classmethod

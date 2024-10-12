@@ -1,20 +1,29 @@
+from fastapi import APIRouter, Depends, Query, Request, status
+from fastapi.responses import Response
+
 from api.v1.oauth2.dependencies.oauth import (
     get_account_provider,
+    get_jwt_service,
     get_oauth_service,
     get_redirect_link_provider,
-    get_jwt_service,
 )
-from api.v1.oauth2.serializers.response.main import AccessTokenVKResponse, AccessTokenData
+from api.v1.oauth2.serializers.response.main import (
+    AccessTokenData,
+    AccessTokenVKResponse,
+)
 from core.auth.models import SessionORM
 from core.oauth.models import SocialAccountORM
-from core.oauth.services import OAuthService, GenerateRefreshTokenInputData, JWTService
+from core.oauth.services import (
+    GenerateRefreshTokenInputData,
+    JWTService,
+    OAuthService,
+)
 from exceptions.app.auth import VKBadCodeException, VKBadRequestException
-from fastapi import APIRouter, Depends, Query, Request, status
 from oauth.providers.vk.account_provider import VKAccountProvider
 from oauth.providers.vk.redirect_link_provider import VKRedirectLinkProvider
 from utils.generics.dto import Result
 from utils.generics.response import BadResponse, OkResponse
-from fastapi.responses import Response
+
 
 oauth2 = APIRouter(prefix="/oauth", tags=["Oauth"])
 

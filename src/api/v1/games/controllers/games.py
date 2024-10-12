@@ -1,15 +1,28 @@
 from uuid import UUID
 
-from api.v1.oauth2.dependencies.auth import get_user_or_401
-from api.v1.games.dependencies.deps import get_game_read_repo, get_game_service, has_permission_to_delete
-from api.v1.games.serializers.request.main import GetGameListRequest, CreateGameRequest
-from api.v1.games.serializers.response.main import GetGameDetailResponse, GetGameListResponse, CreateGameResponse
-from core.oauth.services import UserAPIKeyCredentials
-from core.games.services import GameService
-from exceptions.db.games import GameNotFoundException
 from fastapi import APIRouter, Depends, Request, status
+
+from api.v1.games.dependencies.deps import (
+    get_game_read_repo,
+    get_game_service,
+    has_permission_to_delete,
+)
+from api.v1.games.serializers.request.main import (
+    CreateGameRequest,
+    GetGameListRequest,
+)
+from api.v1.games.serializers.response.main import (
+    CreateGameResponse,
+    GetGameDetailResponse,
+    GetGameListResponse,
+)
+from api.v1.oauth2.dependencies.auth import get_user_or_401
+from core.games.services import GameService
+from core.oauth.services import UserAPIKeyCredentials
+from exceptions.db.games import GameNotFoundException
 from utils.generics.dto import Result
 from utils.generics.response import BadResponse, OkResponse
+
 
 games = APIRouter(prefix="/games", tags=["Games"])
 

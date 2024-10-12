@@ -1,7 +1,9 @@
 import uuid
-from pydantic import Field
+
 from typing import TypedDict
-from core.areas.models import AreaORM
+
+from pydantic import Field
+
 from utils.generics.dto import Result
 from utils.generics.response import PydanticBaseModel
 

@@ -1,7 +1,11 @@
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from core.oauth.models import SocialAccountORM
 from core.users.models import UserORM
-from sqlalchemy.ext.asyncio import AsyncSession
 from utils.generics.dto import Result
+
+
+type UserProfileInfo = Result[dict, None]
 
 
 class SocialAccountUpdateRepository:
@@ -17,7 +21,7 @@ class SocialAccountUpdateRepository:
         *,
         provider: str,
         user: Result[UserORM, None],
-        extra_data: Result["UserProfileInfo", None],  # noqa
+        extra_data: Result[UserProfileInfo, None],
     ) -> SocialAccountORM:
         account = SocialAccountORM(
             provider=provider,

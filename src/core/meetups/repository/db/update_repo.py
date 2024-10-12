@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from api.v1.meetups.serializers.request.main import CreateMeetupRequest
 from core.meetups.models import MeetupORM
 from utils.generics.dto import Result

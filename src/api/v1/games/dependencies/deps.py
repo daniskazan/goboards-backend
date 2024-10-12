@@ -1,12 +1,13 @@
 from uuid import UUID
 
+from fastapi import Depends
+
 from api.v1.oauth2.dependencies.auth import get_user_or_401
-from core.oauth.services import UserAPIKeyCredentials
 from core.games.repository.db.read_repo import GameReadRepository
 from core.games.repository.db.update_repo import GameUpdateRepository
 from core.games.services import GameService
+from core.oauth.services import UserAPIKeyCredentials
 from exceptions.app.auth import ForbiddenHTTPException
-from fastapi import Depends
 from utils.db.session import get_db
 from utils.generics.dto import Result
 

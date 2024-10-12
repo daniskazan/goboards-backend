@@ -3,6 +3,7 @@ from typing import Annotated, Generic, Self, TypeVar
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, alias_generators
 
+
 T = TypeVar("T")
 Payload = TypeVar("Payload")
 ErrorDescription = TypeVar("ErrorDescription")

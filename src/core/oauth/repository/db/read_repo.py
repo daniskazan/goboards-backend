@@ -1,9 +1,10 @@
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from core.oauth.exceptions import AccountNotFoundException
 from core.oauth.models import SocialAccountORM
 from core.oauth.repository.db.query_builders.get_social_account import (
     GetSocialAccountQueryBuilder,
 )
-from sqlalchemy.ext.asyncio import AsyncSession
 from utils.generics.dto import Result
 
 

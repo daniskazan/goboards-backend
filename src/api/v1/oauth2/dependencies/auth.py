@@ -1,9 +1,12 @@
 import jwt
+
+from fastapi import Depends
+from fastapi.security import APIKeyHeader
+
 from configs.server import ServerConfig
 from core.oauth.services import UserAPIKeyCredentials
 from exceptions.app.auth import AuthenticationRequiredHTTPException
-from fastapi import Depends
-from fastapi.security import APIKeyHeader
+
 
 api_key_header = APIKeyHeader(name="Authorization", description="Authorization token", auto_error=False)
 
@@ -18,5 +21,4 @@ async def get_user_or_401(
     except (jwt.ExpiredSignatureError, jwt.InvalidSignatureError) as exc:
         raise AuthenticationRequiredHTTPException from exc
 
-    credentials = UserAPIKeyCredentials(**payload)
-    return credentials
+    return UserAPIKeyCredentials(**payload)

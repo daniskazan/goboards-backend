@@ -1,7 +1,8 @@
 from uuid import UUID
 
-from core.games.models import GameORM
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from core.games.models import GameORM
 from utils.generics.dto import Result
 
 

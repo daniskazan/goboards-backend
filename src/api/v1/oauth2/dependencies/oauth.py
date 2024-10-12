@@ -1,11 +1,16 @@
+from fastapi import Body, Depends
+
 from api.v1.oauth2.serializers.request.main import UserLoginVKRequest
+from core.auth.repository.db.read_repo import SessionReadRepository
+from core.auth.repository.db.update_repo import SessionUpdateRepository
 from core.oauth.repository.db.read_repo import SocialAccountReadRepository
 from core.oauth.repository.db.update_repo import SocialAccountUpdateRepository
-from core.oauth.services import OAuthService, JWTServiceImplementation, JWTService
+from core.oauth.services import (
+    JWTService,
+    JWTServiceImplementation,
+    OAuthService,
+)
 from core.users.repository.db.update_repo import UserUpdateRepository
-from core.auth.repository.db.update_repo import SessionUpdateRepository
-from core.auth.repository.db.read_repo import SessionReadRepository
-from fastapi import Body, Depends
 from oauth.providers.vk.access_token_provider import VKAccessTokenProvider
 from oauth.providers.vk.account_provider import VKAccountProvider
 from oauth.providers.vk.redirect_link_provider import VKRedirectLinkProvider

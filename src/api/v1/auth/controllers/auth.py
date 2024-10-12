@@ -1,13 +1,14 @@
 import uuid
-from fastapi import APIRouter, Depends, Request, status, Cookie
+
+from fastapi import APIRouter, Cookie, Depends, Request, status
 from fastapi.responses import Response
 
-from api.v1.auth.dependencies.deps import get_obtain_token_use_case, get_logout_use_case
+from api.v1.auth.dependencies.deps import (
+    get_logout_use_case,
+    get_obtain_token_use_case,
+)
 from api.v1.oauth2.dependencies.auth import get_user_or_401
-from api.v1.oauth2.serializers.response.main import AccessTokenData
-from core.auth.models import SessionORM
-from core.auth.services import ObtainNewTokenPairUseCase
-from core.auth.services import LogoutUseCase
+from core.auth.services import LogoutUseCase, ObtainNewTokenPairUseCase
 from core.oauth.services import UserAPIKeyCredentials
 from exceptions.db.auth import SessionNotFoundException
 from utils.generics.dto import Result

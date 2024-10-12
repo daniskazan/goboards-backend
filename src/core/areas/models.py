@@ -1,6 +1,7 @@
 from uuid import UUID
 
-from sqlalchemy import ForeignKey, orm, UniqueConstraint
+from sqlalchemy import ForeignKey, UniqueConstraint, orm
+
 from utils.db.base import BaseORMModel
 
 
