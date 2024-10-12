@@ -14,8 +14,7 @@ class GameService:
         self.game_update_repo = game_update_repo
 
     async def get_game_by_id(self, *, game_id: UUID) -> Result[GameORM, None] | Result[None, GameNotFoundException]:
-        game = await self.game_read_repo.get_game_by_id(game_id=game_id)
-        return game
+        return await self.game_read_repo.get_game_by_id(game_id=game_id)
 
     async def get_games_list(self, *, params: GetGameListRequest) -> Result[list[GameORM], None]:
         return await self.game_read_repo.get_games_list(game_name=params.name, limit=params.limit, offset=params.offset)
@@ -28,5 +27,4 @@ class GameService:
         return await self.game_update_repo.delete_game(result=result)
 
     async def create_game(self, *, user_id: UUID, game_name: str) -> Result[GameORM, None]:
-        game = await self.game_update_repo.create_game(user_id=user_id, game_name=game_name)
-        return game
+         return await self.game_update_repo.create_game(user_id=user_id, game_name=game_name)

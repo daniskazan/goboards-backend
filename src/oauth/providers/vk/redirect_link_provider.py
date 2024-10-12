@@ -18,5 +18,4 @@ class VKRedirectLinkProvider:
             "redirect_uri": self._redirect_uri,
             "response_type": self._response_type,
         }
-        link = self._authorize_url + urllib.parse.urlencode(params)
-        return link
+        return self._authorize_url + urllib.parse.urlencode(params)
