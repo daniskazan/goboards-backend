@@ -10,6 +10,7 @@ from api.v1.meetups.serializers.request.main import (
 from api.v1.meetups.serializers.response.main import (
     CreateMeetupResponse,
     GetMeetupListResponse,
+    MeetupDetailResponse,
 )
 from api.v1.oauth2.dependencies.auth import get_user_or_401
 from core.meetups.services import MeetupService
@@ -42,15 +43,16 @@ async def get_meetup_detail(
         case Result(None, MeetupNotFoundException() as err):
             return BadResponse.new(status_code=status.HTTP_404_NOT_FOUND, error=err.detail)
         case Result(_, None):
-            return OkResponse.new(payload=result.payload)
+            return OkResponse.new(payload=MeetupDetailResponse.from_orm(result.payload))
 
 
 @meetups.post("/", summary="Создать встречу")
 async def create_meetup(
     request: Request,
     body: CreateMeetupRequest,
-    meetup_service: MeetupService = Depends(get_meetup_service),
+    user: UserAPIKeyCredentials = Depends(get_user_or_401),
+    meetup_service: MeetupService = Depends(get_meetup_service)
 ):
-    meetup = await meetup_service.create_meetup(params=body)
+    meetup = await meetup_service.create_meetup(user_id=user.sub, params=body)
     r = CreateMeetupResponse.get_meetup(meetup)
     return OkResponse.new(status_code=status.HTTP_201_CREATED, payload=r)

@@ -35,7 +35,7 @@ async def callback(request: Request, code: str = Query()):
     return OkResponse.new(status_code=200, payload=code)
 
 
-@oauth2.get("/vk", summary=" Перейти на страницу авторизации на стороне ВК")
+@oauth2.get("/vk/redirect-link", summary=" Перейти на страницу авторизации на стороне ВК")
 async def get_vk_link(
     request: Request,
     provider: VKRedirectLinkProvider = Depends(get_redirect_link_provider),
@@ -44,7 +44,7 @@ async def get_vk_link(
 
 
 @oauth2.post(
-    "/login/vk",
+    "/vk/login",
     summary="Авторизоваться через Вконтакте",
     name="auth:vk",
 )
@@ -67,9 +67,14 @@ async def get_access_token(
 
     account: Result[SocialAccountORM, None] = await oauth_service.login(provider="vk", profile=profile)
     access_token: str = jwt_service.create_access_token(user=account.payload.user)
-    session: SessionORM = await jwt_service.create_refresh_token(data=GenerateRefreshTokenInputData(user_id=account.payload.user_id, ip=request.client.host))
+    session: SessionORM = await jwt_service.create_refresh_token(
+        data=GenerateRefreshTokenInputData(
+            user_id=account.payload.user_id,
+            ip=request.client.host
+        )
+    )
     response.set_cookie(
-        key="refresh_token",
+        key="refreshToken",
         value=session.refresh_token,
         expires=session.expires_at.timestamp(),
         httponly=True,

@@ -15,7 +15,7 @@ class MeetupUserORM(BaseORMModel):
     __table_args__ = (UniqueConstraint("meetup_id", "user_id", name="meetup_user_unique"),)
     meetup_id: orm.Mapped[uuid.UUID] = orm.mapped_column(ForeignKey("meetups.id"))
     user_id: orm.Mapped[uuid.UUID] = orm.mapped_column(ForeignKey("users.id"))
-    user_status: orm.Mapped[UserMeetupStatus]
+    user_status: orm.Mapped[UserMeetupStatus] = orm.mapped_column(default=UserMeetupStatus.INITIATOR)
 
 
 class MeetupGameORM(BaseORMModel):

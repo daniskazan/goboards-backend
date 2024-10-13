@@ -1,11 +1,15 @@
 from fastapi import Query
-from pydantic import Field, PositiveInt, StrictInt
+from pydantic import Field, PositiveInt, StrictInt, field_validator
 
 from utils.generics.response import PydanticBaseModel
 
 
 class CreateGameRequest(PydanticBaseModel):
     name: str = Field(..., description="Название игры")
+
+    @field_validator("name")
+    def type_to_description(cls, v: str):  # noqa: N805
+        return v.capitalize()
 
 
 class GetGameListRequest(PydanticBaseModel):

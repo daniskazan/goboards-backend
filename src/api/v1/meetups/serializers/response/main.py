@@ -35,3 +35,19 @@ class CreateMeetupResponse(PydanticBaseModel):
     @classmethod
     def get_meetup(cls, /, result: Result[MeetupORM, None]) -> Self:
         return cls.model_validate(result.payload)
+
+
+class MeetupParticipant(PydanticBaseModel):
+    username: str = Field(...)
+    id: uuid.UUID = Field(..., alias="user_id")
+
+
+class MeetupDetailResponse(GetMeetupListResponse):
+    users: list[MeetupParticipant] = Field(alias="participants")
+
+    @classmethod
+    def from_orm(
+        cls,
+        meetup: MeetupORM,
+    ):
+        return cls.model_validate(meetup)

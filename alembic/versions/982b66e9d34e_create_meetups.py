@@ -35,7 +35,7 @@ def upgrade() -> None:
     op.create_table('meetups_users',
     sa.Column('meetup_id', sa.Uuid(), nullable=False),
     sa.Column('user_id', sa.Uuid(), nullable=False),
-    sa.Column('user_status', sa.Enum('INITIATOR', 'PARTICIPANT', name='usermeetupstatus'), nullable=False),
+    sa.Column('user_status', sa.Enum('INITIATOR', 'PARTICIPANT', name='usermeetupstatus'), nullable=False, default='INITIATOR'),
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),

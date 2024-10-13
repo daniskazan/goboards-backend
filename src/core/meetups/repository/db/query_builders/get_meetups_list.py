@@ -32,7 +32,7 @@ class GetMeetupListQueryBuilder:
 
     @classmethod
     def __filter_by_status(cls):
-        cls.__result_query = cls.__result_query.where(MeetupORM.meetup_status.in_((MeetupStatus.NEW, MeetupStatus.DISCUSSION)))
+        cls.__result_query = cls.__result_query.where(MeetupORM.meetup_status.in_((MeetupStatus.NEW,)))
         return cls
 
     @classmethod

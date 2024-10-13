@@ -22,5 +22,5 @@ class MeetupService:
     async def get_meetup_detail(self, *, meetup_id: uuid.UUID) -> Result[MeetupORM, None] | Result[None, MeetupNotFoundException]:
         return await self.meetup_read_repo.get_meetup_detail(meetup_id=meetup_id)
 
-    async def create_meetup(self, *, params: CreateMeetupRequest):
-        return await self.meetup_update_repo.create_meetup(params=params)
+    async def create_meetup(self, *, user_id: uuid.UUID, params: CreateMeetupRequest):
+        return await self.meetup_update_repo.create_meetup(user_id=user_id, params=params)

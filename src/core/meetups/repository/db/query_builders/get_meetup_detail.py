@@ -3,6 +3,7 @@ import uuid
 from typing import Self
 
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.sql.selectable import Select
 
 from core.meetups.models import MeetupORM
@@ -23,12 +24,12 @@ class GetMeetupDetailQueryBuilder:
 
     @classmethod
     def __join_games(cls):
-        cls.__result_query = cls.__result_query.join(MeetupORM.games)
+        cls.__result_query = cls.__result_query.options(selectinload(MeetupORM.games))
         return cls
 
     @classmethod
-    def __join_users(cls):
-        cls.__result_query = cls.__result_query.join(MeetupORM.users)
+    def __join_users(cls) -> type[Self]:
+        cls.__result_query = cls.__result_query.options(selectinload(MeetupORM.users))
         return cls
 
     @classmethod
