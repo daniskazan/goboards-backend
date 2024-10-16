@@ -34,7 +34,11 @@ async def get_meetup_list(
     return OkResponse.new(payload=GetMeetupListResponse.get_meetup_list(result))
 
 
-@meetups.get("/{meetup_id}", summary="Получить подробную информацию по встрече")
+@meetups.get(
+    "/{meetup_id}",
+    summary="Получить подробную информацию по встрече",
+    response_model=OkResponse[MeetupDetailResponse]
+)
 async def get_meetup_detail(
     request: Request, meetup_id: uuid.UUID, meetup_service: MeetupService = Depends(get_meetup_service), user: UserAPIKeyCredentials = Depends(get_user_or_401)
 ):

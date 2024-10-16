@@ -17,6 +17,9 @@ class MeetupUserORM(BaseORMModel):
     user_id: orm.Mapped[uuid.UUID] = orm.mapped_column(ForeignKey("users.id"))
     user_status: orm.Mapped[UserMeetupStatus] = orm.mapped_column(default=UserMeetupStatus.INITIATOR)
 
+    user: orm.Mapped["UserORM"] = orm.relationship(back_populates="meetup_associations")
+    meetup: orm.Mapped["MeetupORM"] = orm.relationship(back_populates="user_associations")
+
 
 class MeetupGameORM(BaseORMModel):
     __tablename__ = "meetups_games"
@@ -36,9 +39,10 @@ class MeetupORM(BaseORMModel):
     preferred_start_time: orm.Mapped[dt.time] = orm.mapped_column(nullable=False)
     preferred_end_time: orm.Mapped[dt.time] = orm.mapped_column(nullable=False)
 
-    area: orm.Mapped[AreaORM] = orm.relationship(lazy="joined")
+    area: orm.Mapped[AreaORM] = orm.relationship(lazy="selectin")
     games: orm.Mapped[list[GameORM]] = orm.relationship(secondary="meetups_games")
-    users: orm.Mapped[list[UserORM]] = orm.relationship(secondary="meetups_users")
+    users: orm.Mapped[list[UserORM]] = orm.relationship(secondary="meetups_users", back_populates="meetups")
+    user_associations: orm.Mapped[list[MeetupUserORM]] = orm.relationship(back_populates="meetup")
 
     @property
     def participant_count(self) -> int:

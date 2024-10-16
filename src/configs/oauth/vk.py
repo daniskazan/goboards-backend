@@ -2,6 +2,8 @@ import os
 
 from typing import Final
 
+from configs.server import ServerConfig
+
 
 class VKOauthConfig:
     VK_CLIENT_ID: int = os.environ.get("VK_CLIENT_ID", 7879893)
@@ -13,7 +15,7 @@ class VKOauthConfig:
 
     VK_AUTHORIZE_URL: str = os.environ.get("VK_AUTHORIZE_URL", "https://oauth.vk.com/authorize/?")
     VK_ACCESS_TOKEN_URL: str = os.environ.get("VK_ACCESS_TOKEN_URL", "https://oauth.vk.com/access_token/")
-    VK_REDIRECT_URI: str = os.environ.get("VK_REDIRECT_URI", "http://127.0.0.1:8000/api/v1/oauth/vk/callback")
+    VK_REDIRECT_URI: str = os.environ.get("VK_REDIRECT_URI", f"http://{ServerConfig.APP_HOST}:8000/api/v1/oauth/vk/callback")
     VK_RESPONSE_TYPE: Final = os.environ.get("VK_RESPONSE_TYPE", "code")
     VK_API_VERSION: str = os.environ.get("VK_API_VERSION", "5.199")
     VK_PROFILE_URL: str = os.environ.get("VK_PROFILE_URL", "https://api.vk.com/method/users.get")

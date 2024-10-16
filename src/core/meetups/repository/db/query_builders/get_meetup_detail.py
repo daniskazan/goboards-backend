@@ -6,7 +6,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.sql.selectable import Select
 
-from core.meetups.models import MeetupORM
+from core.meetups.models import MeetupORM, MeetupUserORM
+from core.users.models import UserORM
 
 
 class GetMeetupDetailQueryBuilder:
@@ -29,7 +30,11 @@ class GetMeetupDetailQueryBuilder:
 
     @classmethod
     def __join_users(cls) -> type[Self]:
-        cls.__result_query = cls.__result_query.options(selectinload(MeetupORM.users))
+        cls.__result_query = cls.__result_query.options(
+            selectinload(MeetupORM.users).load_only(UserORM.first_name, UserORM.last_name, UserORM.created_at).options(
+                selectinload(UserORM.meetup_associations).load_only(MeetupUserORM.user_status)
+            )
+        )
         return cls
 
     @classmethod

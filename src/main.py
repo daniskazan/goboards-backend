@@ -1,16 +1,18 @@
-from cmd.observers import ApplicationObserver, ExceptionHandler, RoutingHandler
 
 import uvicorn
 
 from fastapi import FastAPI
 
 from configs.server import ServerConfig
+from observers.exception_handler import ExceptionHandler
+from observers.interface import ApplicationObserver
+from observers.routing_handler import RoutingHandler
 from utils.generics.response import APIResponse
 
 
 class Server:
     app: FastAPI = FastAPI(
-        title="Goboards Service",
+        title="PlayGame Service",
         default_response_class=APIResponse,
         docs_url="/docs"
     )
@@ -19,6 +21,7 @@ class Server:
         ExceptionHandler(),
         RoutingHandler(),
     )
+
     def __call__(self) -> FastAPI:
         """
         Need for uvicorn.

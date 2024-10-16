@@ -4,23 +4,31 @@ services:
   - docker:20.10-dind
 
 stages:
+  - linting
+  - test
   - build
   - deploy
 
-.base_build: &base_build
- image: tiangolo/docker-with-compose
- stage: build
- before_script:
-   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
- script:
-   - docker build --build-arg CI_COMMIT_SHA=${CI_COMMIT_SHA} --build-arg CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} -t ${CI_REGISTRY}/${CI_PROJECT_PATH}/python:${CI_COMMIT_REF_SLUG} -f Dockerfile .
-   - docker tag ${CI_REGISTRY}/${CI_PROJECT_PATH}/python:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY}/${CI_PROJECT_PATH}/python:${CI_COMMIT_REF_SLUG}
-   - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/python:${CI_COMMIT_REF_SLUG}
+#.base_build: &base_build
+# image: tiangolo/docker-with-compose
+# stage: build
+# before_script:
+#   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+# script:
+#   - docker build --build-arg CI_COMMIT_SHA=${CI_COMMIT_SHA} --build-arg CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} -t ${CI_REGISTRY}/${CI_PROJECT_PATH}/python:${CI_COMMIT_REF_SLUG} -f Dockerfile .
+#   - docker tag ${CI_REGISTRY}/${CI_PROJECT_PATH}/python:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY}/${CI_PROJECT_PATH}/python:${CI_COMMIT_REF_SLUG}
+#   - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/python:${CI_COMMIT_REF_SLUG}
 
-build_prod:
- <<: *base_build
- tags:
-   - build
- only:
-   - main
+#build_prod:
+# <<: *base_build
+# tags:
+#   - build
+# only:
+#   - main
+
+linters:
+  stage: linting
+  image: python:3.12
+  before_script: pip install ruff
+  script: make lint
 

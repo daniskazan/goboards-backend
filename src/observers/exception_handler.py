@@ -1,13 +1,12 @@
 import enum
 
-from cmd.observers.interface import ApplicationObserver
-
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from sqlalchemy.exc import IntegrityError
 from starlette.responses import JSONResponse
 
 from exceptions.app.auth import AuthenticationRequiredHTTPException
+from observers.interface import ApplicationObserver
 
 
 class ExceptionCodeEnum(enum.StrEnum):

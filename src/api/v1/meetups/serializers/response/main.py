@@ -1,13 +1,13 @@
 import datetime as dt
 import uuid
 
-from typing import Self
+from typing import Any, Self
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from api.v1.games.serializers.response.main import NestedGameMeetupListResponse
 from core.meetups.enums import MeetupStatus
-from core.meetups.models import MeetupORM
+from core.meetups.models import MeetupORM, MeetupUserORM
 from utils.generics.dto import Result
 from utils.generics.response import PydanticBaseModel
 
@@ -38,11 +38,20 @@ class CreateMeetupResponse(PydanticBaseModel):
 
 
 class MeetupParticipant(PydanticBaseModel):
+    class MeetupUserStatus(PydanticBaseModel):
+        user_status: str
+
     username: str = Field(...)
+    meetup_associations: Any = Field(..., alias="user_status")
     id: uuid.UUID = Field(..., alias="user_id")
+
+    @field_validator("meetup_associations")
+    def display_user_meetup_status(cls, value: MeetupUserORM):  # noqa: N805
+        return value.user_status.display()
 
 
 class MeetupDetailResponse(GetMeetupListResponse):
+
     users: list[MeetupParticipant] = Field(alias="participants")
 
     @classmethod

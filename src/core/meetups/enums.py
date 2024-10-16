@@ -11,3 +11,10 @@ class MeetupStatus(IntEnum):
 class UserMeetupStatus(IntEnum):
     INITIATOR = auto()
     PARTICIPANT = auto()
+
+    def display(self):
+        mapping = {
+            self.INITIATOR: "Инициатор",
+            self.PARTICIPANT: "Участник"
+        }
+        return mapping[self]

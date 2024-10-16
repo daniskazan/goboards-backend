@@ -8,7 +8,7 @@ from utils.db.base import BaseORMModel
 if TYPE_CHECKING:
     from core.auth.models import SessionORM
     from core.games.models import GameORM
-    from core.meetups.models import MeetupORM
+    from core.meetups.models import MeetupORM, MeetupUserORM
     from core.oauth.models import SocialAccountORM
 
 
@@ -27,6 +27,7 @@ class UserORM(BaseORMModel):
     )
     sessions: orm.Mapped[list["SessionORM"]] = orm.relationship(back_populates="user")
     meetups: orm.Mapped[list["MeetupORM"]] = orm.relationship(secondary="meetups_users", back_populates="users")
+    meetup_associations: orm.Mapped["MeetupUserORM"] = orm.relationship(back_populates="user")
 
 
     @property
